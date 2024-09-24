@@ -1,11 +1,11 @@
 <meta charset="utf-8">
 <script>
-    const conta = prompt("insira o valor da conta");
-    const clientes = prompt("insira o numero de clientes");
+    const conta = Number(prompt("insira o valor da conta"));
+    const clientes = Number(prompt("insira o numero de clientes"));
     const valorFinal = conta / clientes
     alert(`
             Valor da conta: R$${conta}
-            Número de Clientes: ${clientes}
-            Valor por cliente: R$${valorFinal}
+            Número de Clientes: (${clientes}
+            Valor por cliente: R$${valorFinal.toFixed(2)}
             `);
 </script>
