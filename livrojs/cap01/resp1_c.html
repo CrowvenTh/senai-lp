@@ -1,10 +1,10 @@
 <meta charset="utf-8">
 <script>
-    const preco = prompt("insira o preço do produto");
+    const preco = Number(prompt("insira o preço do produto"));
 
     alert(
         `Preço: R$${preco}
-         À vista: R$${preco - (preco * 0.10)}
+         À vista: R$${preco - (preco * 0.10).toFixed(2)}
          Ou 3x de R$${preco / 3}
         `);
 </script>
