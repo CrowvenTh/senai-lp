@@ -11,9 +11,8 @@ frm.addEventListener("submit", (e) => {
     const minutos = duracao % 60; //processamento
     
     resp1.innerText = titulo; //saida
-    alert()
     resp2.innerText = `${horas} horas(s) e ${minutos} minutos`; // saida
     
-    e.preventDefault();
+    e.preventDefault()
 });
 
