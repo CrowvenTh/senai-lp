@@ -1,3 +1,4 @@
+/* Reset básico para remover margens e padding padrão */
 * {
     margin: 0;
     padding: 0;
@@ -5,87 +6,48 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
     color: #333;
     line-height: 1.6;
-    margin: 20px;
+    padding: 20px;
 }
 
 h1 {
-    font-size: 2.5em;
     text-align: center;
-    color: #2c3e50;
+    color: #4A90E2;
     margin-bottom: 20px;
 }
 
 h2 {
-    font-size: 1.8em;
-    color: #34495e;
-    margin-top: 30px;
-    margin-bottom: 10px;
+    color: #4A90E2;
+    margin: 20px 0 10px;
+    border-bottom: 2px solid #4A90E2;
+    padding-bottom: 5px;
 }
 
 ul {
-    list-style-type: none;
-    margin: 10px 0;
-    padding: 0;
+    list-style: none; /* Remove marcadores padrão */
+    padding: 10px;
+    margin-bottom: 20px;
+    background: #fff; /* Fundo branco para a lista */
+    border-radius: 5px; /* Bordas arredondadas */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 }
 
 li {
-    margin: 5px 0;
+    margin: 10px 0; /* Espaçamento entre itens */
 }
 
 a {
-    text-decoration: none;
-    color: #3498db;
-    font-weight: bold;
-    transition: color 0.3s ease;
+    text-decoration: none; /* Remove o sublinhado padrão */
+    color: #333; /* Cor do texto */
+    padding: 8px 12px; /* Espaçamento interno */
+    border-radius: 3px; /* Bordas arredondadas para links */
+    transition: background-color 0.3s; /* Transição suave para hover */
 }
 
 a:hover {
-    color: #1abc9c;
-}
-
-body ul:first-of-type {
-    margin-top: 30px;
-}
-
-body ul:last-of-type {
-    margin-bottom: 50px;
-}
-
-ul li a {
-    display: block;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #ecf0f1;
-    transition: background-color 0.3s ease;
-}
-
-ul li a:hover {
-    background-color: #bdc3c7;
-}
-
-ul:nth-of-type(2), 
-ul:nth-of-type(4) {
-    margin-left: 15px;
-}
-
-@media (max-width: 768px) {
-    body {
-        margin: 10px;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
-
-    h2 {
-        font-size: 1.5em;
-    }
-
-    ul li a {
-        padding: 8px;
-    }
+    background-color: #4A90E2; /* Cor de fundo ao passar o mouse */
+    color: #fff; /* Cor do texto ao passar o mouse */
 }
