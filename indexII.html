@@ -44,7 +44,13 @@
                 "livrojs/cap04/resp4_c.html",
                 "livrojs/cap04/resp4_d.html"
             ]
+            let cap = "";
             for (let i = 0; i < arquivos.length; i++) {
+                let url = arquivos[i].split("/");
+                if (cap != url[1]) {
+                    cap = url[1];
+                    document.write(`<h3>${cap.replace("cap", "Capítulo ")}</h3>`)
+                }
 
                 let link = arquivos[i]
                     .substring(14)
