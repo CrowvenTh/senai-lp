@@ -24,8 +24,8 @@ create table time (
     cidade varchar(150),
     estado varchar(150),
     id_estadio int not null,
-    constraint PK_time primary key (id_time),
-    constraint FK_estadioTime foreign key (id_estadio) references estadio(id_estadio)
+        constraint PK_time primary key (id_time),
+        constraint FK_estadioTime foreign key (id_estadio) references estadio(id_estadio)
 );
 
 create table jogador (
@@ -35,8 +35,8 @@ create table jogador (
     dt_nascimento date,
     posicao varchar(150),
     id_time int not null,
-    constraint PK_jogador primary key(id_jogador),
-    constraint FK_jogadorTime foreign key (id_time) references time(id_time)
+        constraint PK_jogador primary key(id_jogador),
+        constraint FK_jogadorTime foreign key (id_time) references time(id_time)
 );
 
 create table partida (
@@ -48,7 +48,18 @@ create table partida (
     id_estadio int not null,
     id_mandante int not null,
     id_visitante int not null,
-    constraint PK_partida primary key(id_partida),
-    constraint FK_time_mandante foreign key (id_mandante) references time(id_time),
-    constraint FK_time_visitante foreign key (id_visitante) references time(id_time)
+        constraint PK_partida primary key(id_partida),
+        constraint FK_estadio foreign key (id_estadio) references estadio(id_estadio),
+        constraint FK_time_mandante foreign key (id_mandante) references time(id_time),
+        constraint FK_time_visitante foreign key (id_visitante) references time(id_time)
+);
+create table evento (
+    id_evento int,
+    minuto int,
+    descricao varchar(100).
+    id_jogador int not null,
+    id_partida int not null,
+        constraint PK_evento primary key(id_evento),
+        constraint FK_evento_jogador foreign key (id_jogador) references jogador(id_jogador),
+        constraint FK_evento_partida foreign key (id_partida) references partida(id_partida)
 );
