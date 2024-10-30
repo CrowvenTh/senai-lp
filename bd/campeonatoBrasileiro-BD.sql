@@ -38,3 +38,17 @@ create table jogador (
     constraint PK_jogador primary key(id_jogador),
     constraint FK_jogadorTime foreign key (id_time) references time(id_time)
 );
+
+create table partida (
+    id_partida int,
+    rodada int,
+    horario datetime,
+    gol_mandante int not null,
+    gol_visitante int not null,
+    id_estadio int not null,
+    id_mandante int not null,
+    id_visitante int not null,
+    constraint PK_partida primary key(id_partida),
+    constraint FK_time_mandante foreign key (id_mandante) references time(id_time),
+    constraint FK_time_visitante foreign key (id_visitante) references time(id_time)
+);
