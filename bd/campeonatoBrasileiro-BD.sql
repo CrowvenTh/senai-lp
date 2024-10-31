@@ -65,3 +65,11 @@ create table evento (
         constraint FK_evento_jogador foreign key(id_jogador) references jogador(id_jogador),
         constraint FK_evento_partida foreign key(id_partida) references partida(id_partida)
 );
+
+desc estadio;
+desc time;
+desc jogador;
+desc partida;
+desc evento;
+
+-- alter table time modify id_time int auto_increment; (alterando o atributo id para ser auto incremento);
