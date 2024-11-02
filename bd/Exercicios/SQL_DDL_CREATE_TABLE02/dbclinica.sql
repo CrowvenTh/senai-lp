@@ -26,7 +26,7 @@ create table if not exists pacientes(
     nome varchar(40) not null,
     data_nascimento date,
     cidade char(30) default('Taguatinga'),
-    doenca varchar(30) not null,
+    doenca varchar(40) not null,
     plano_saude varchar(40) not null default ('SUS'),
 		constraint PK_paciente primary key (cpf)
 )Engine = InnoDB;
@@ -37,7 +37,7 @@ create table if not exists funcionarios(
     data_nascimento date not null,
     data_admissao date not null,
     cargo varchar(40) not null default ('Assistente medico'),
-    salario decimal(5,2) not null default ('1510'),
+    salario decimal(5,2) not null default ('1510.00'),
 		constraint PK_funcionario primary key (matricula)
 )Engine = InnoDB;
 
