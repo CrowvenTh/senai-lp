@@ -37,7 +37,7 @@ create table if not exists funcionarios(
     data_nascimento date not null,
     data_admissao date not null,
     cargo varchar(40) not null default ('Assistente medico'),
-    salario decimal(5,2) not null default ('1510.00'),
+    salario decimal(8,2) not null default (1510.00),
 		constraint PK_funcionario primary key (matricula)
 )Engine = InnoDB;
 
