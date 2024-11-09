@@ -72,11 +72,10 @@ select * from bebe;
 
 -- Select --
 
-select b.nome, b.dt_nascimento, b.peso, b.altura, me.nome, ma.nome
+select b.nome, b.dt_nascimento as 'data de nascimento', b.peso, b.altura, me.nome as 'médico', ma.nome as 'mãe'
 	from bebe as b
 		inner join medico as me
-			inner join mae as ma
-				on b.crm = me.crm
-					and b.id_mae = ma.id_mae
+			on b.crm = me.crm
+				inner join mae as ma
+					on b.id_mae = ma.id_mae
 						order by b.dt_nascimento, b.peso;
-
