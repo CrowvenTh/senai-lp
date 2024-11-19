@@ -124,7 +124,7 @@ SELECT count(*) FROM Customers WHERE CustomerID NOT IN (SELECT DISTINCT Customer
 Função MySQL SUBSTR()
 */
 -- Extraia uma substring de uma string (comece na posição 5, extraia 3 caracteres)
-SELECT SUBSTR("SQL Tutorial", 5, 3) AS ExtractString; -- Retorno: Tut
+SELECT SUBSTR("SQL Tutorial", 5, 3) AS ExtractString; -- Retorno: Tut0
 
 -- Extraia uma substring de uma string (comece do final, na posição -5, extraia 5 caracteres):
 SELECT SUBSTR("SQL Tutorial", -5, 5) AS ExtractString; -- Retorno: orial
