@@ -17,24 +17,25 @@ update filme set ano_de_lancamento = 2007 where titulo like '%B';
 select * from filme where ano_de_lancamento = 2007;
 
 /*6. Listar os filmes que possuem duração do filme maior que 100 e classificação igual a "G". */
-select * from filme;
-select * from filme where duracao_do_filme > 100 and classificacao = "G";
+select titulo, duracao_do_filme, classificacao from filme where duracao_do_filme > 100 and classificacao = "G";
 
 /*7. Alterar o ano de lançamento igual 2008 para filmes que possuem duração da locação menor que 4 e classificação igual a "PG". */
 update filme set ano_de_lancamento = 2008 where duracao_da_locacao < 4 and classificacao = "PG";
-
 select titulo, ano_de_lancamento, duracao_da_locacao, classificacao from filme where ano_de_lancamento = 2008 and duracao_da_locacao < 4 and classificacao = "PG";
 
 /*8. Listar a quantidade de filmes que estejam classificados como "PG-13" e preço da locação maior que 2.40.*/
-select * from filme where classificacao = "PG-13" and preco_da_locacao > 2.40;
+select count(*) from filme where classificacao = "PG-13" and preco_da_locacao > 2.40;
 
 /*9. Quais os idiomas que possuem filmes cadastrados? */
-select nome from idioma;
+select titulo, nome 
+	from filme f 
+		inner join idioma i
+			on f.idioma_id = i.idioma_id;
 
 /*10. Alterar o idioma para "GERMAN" dos filmes que possuem preço da locação maior que 4.*/
-update filme set idioma_id = 6 where preco_da_locacao > 4;
+update filme, idioma set idioma_id = 6 where preco_da_locacao > 4;
 
-select f.idioma_id, i.nome from filme f
+select f.titulo, f.idioma_id, i.nome from filme f
 	inner join idioma i
 		on f.idioma_id = i.idioma_id  
 			where f.idioma_id = 6 and f.preco_da_locacao > 4;
@@ -42,28 +43,44 @@ select f.idioma_id, i.nome from filme f
 /*11. Alterar o idioma para "JAPANESE" dos filmes que possuem preço da locação igual 0.99.*/
 update filme set idioma_id = 3 where preco_da_locacao = 0.99;
 
-select f.idioma_id, i.nome from filme f
+select f.titulo, f.idioma_id, i.nome from filme f
 	inner join idioma i
 		on f.idioma_id = i.idioma_id  
 			where f.idioma_id = 3 and f.preco_da_locacao = 0.99;
 
 /*12. Listar a quantidade de filmes por classificação.*/
-select classificacao, count(filme_id) from filme group by classificacao;
+select classificacao, count(filme_id) as filmes from filme group by classificacao;
 
 /*13. Listar, sem repetição, os preços de locação dos filmes cadastrados.*/
 select * from filme;
-
 select distinct preco_da_locacao from filme where filme_id is not null; -- filme_id > 0
 
 /*14. Listar a quantidade de filmes por preço da locação.*/
 select preco_da_locacao, count(filme_id) from filme group by preco_da_locacao order by preco_da_locacao desc;
 
 /*15. Listar os precos da locação que possuam mais de 340 filmes.*/
-select preco_da_locacao from filme where count(filme_id) > 340;
+select preco_da_locacao, count(filme_id) from filme where preco_da_locacao > 340 group by preco_da_locacao;
 
 /*16. Listar a quantidade de atores por filme ordenando por quantidade de atores crescente.*/
+select f.titulo, count(a.ator_id) as atores
+	from filme f
+		inner join filme_ator fa
+			on f.filme_id = fa.filme_id
+				inner join ator a
+					on a.ator_id = fa.ator_id
+						group by f.titulo
+							order by count(a.ator_id);
 
 /*17. Listar a quantidade de atores para os filmes que possuem mais de 5 atores ordenando por quantidade de atores decrescente.*/
+select f.titulo, count(a.ator_id) as atores
+	from filme f
+		inner join filme_ator fa 
+			on f.filme_id = fa.filme_id
+				inner join ator a
+					on a.ator_id = fa.ator_id
+						where count(a.ator_id) > 5
+							group by f.titulo
+								order by f.titulo desc;							
 
 /*18. Listar o título e a quantidade de atores para os filmes que possuem o idioma "JAPANESE" e mais de 10 atores ordenando por ordem alfabética de título e ordem crescente de quantidade de atores.*/
 
