@@ -59,7 +59,7 @@ select distinct preco_da_locacao from filme where filme_id is not null; -- filme
 select preco_da_locacao, count(filme_id) from filme group by preco_da_locacao order by preco_da_locacao desc;
 
 /*15. Listar os precos da locação que possuam mais de 340 filmes.*/
-select preco_da_locacao, count(filme_id) from filme where preco_da_locacao > 340 group by preco_da_locacao;
+select preco_da_locacao, count(filme_id) from filme group by preco_da_locacao having count(*) > 340;
 
 /*16. Listar a quantidade de atores por filme ordenando por quantidade de atores crescente.*/
 select f.titulo, count(a.ator_id) as atores
@@ -69,20 +69,32 @@ select f.titulo, count(a.ator_id) as atores
 				inner join ator a
 					on a.ator_id = fa.ator_id
 						group by f.titulo
-							order by count(a.ator_id);
+-- 							order by count(a.ator_id) asc;
+                            order by 2 asc;
 
 /*17. Listar a quantidade de atores para os filmes que possuem mais de 5 atores ordenando por quantidade de atores decrescente.*/
 select f.titulo, count(a.ator_id) as atores
 	from filme f
-		inner join filme_ator fa 
+		inner join filme_ator fa
 			on f.filme_id = fa.filme_id
 				inner join ator a
 					on a.ator_id = fa.ator_id
-						where count(a.ator_id) > 5
-							group by f.titulo
-								order by f.titulo desc;							
-
+						group by f.titulo 
+                            having count(a.ator_id) > 5
+								order by 2 desc;
+                                
 /*18. Listar o título e a quantidade de atores para os filmes que possuem o idioma "JAPANESE" e mais de 10 atores ordenando por ordem alfabética de título e ordem crescente de quantidade de atores.*/
+select i.nome, f.titulo, count(a.ator_id)
+	from filme as f
+		inner join filme_ator as fa
+			on f.filme_id = fa.filme_id
+				inner join ator as a
+					on a.ator_id = fa.ator_id
+						inner join idioma as i
+							on f.idioma_id = i.idioma_id
+								group by f.titulo
+									having count(a.ator_id) > 10
+										order by f.titulo, count(a.ator_id) asc;
 
 /*19. Qual a maior duração da locação dentre os filmes?*/
 
