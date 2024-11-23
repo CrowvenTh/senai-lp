@@ -84,17 +84,16 @@ select f.titulo, count(a.ator_id) as atores
 								order by 2 desc;
                                 
 /*18. Listar o título e a quantidade de atores para os filmes que possuem o idioma "JAPANESE" e mais de 10 atores ordenando por ordem alfabética de título e ordem crescente de quantidade de atores.*/
-select i.nome, f.titulo, count(a.ator_id)
-	from filme as f
-		inner join filme_ator as fa
-			on f.filme_id = fa.filme_id
-				inner join ator as a
-					on a.ator_id = fa.ator_id
-						inner join idioma as i
-							on f.idioma_id = i.idioma_id
-								group by f.titulo
-									having count(a.ator_id) > 10
-										order by f.titulo, count(a.ator_id) asc;
+select f.titulo, count(fa.ator_id) from filme f
+	inner join filme_ator fa
+		on f.filme_id = fa.filme_id
+			inner join idioma i
+				on i.idioma_id = f.idioma_id
+					where i.nome = 'JAPANESE'
+						group by f.titulo
+							having count(fa.ator_id) > 10
+								order by 1 asc, count(fa.ator_id) asc;
+					
 
 /*19. Qual a maior duração da locação dentre os filmes?*/
 
