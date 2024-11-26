@@ -84,7 +84,7 @@ select f.titulo, count(a.ator_id) as atores
 								order by 2 desc;
                                 
 /*18. Listar o título e a quantidade de atores para os filmes que possuem o idioma "JAPANESE" e mais de 10 atores ordenando por ordem alfabética de título e ordem crescente de quantidade de atores.*/
-select f.titulo, count(fa.ator_id) from filme f
+select f.titulo, count(fa.ator_id) as atores, i.nome as idioma from filme f
 	inner join filme_ator fa
 		on f.filme_id = fa.filme_id
 			inner join idioma i
@@ -94,24 +94,56 @@ select f.titulo, count(fa.ator_id) from filme f
 							having count(fa.ator_id) > 10
 								order by 1 asc, count(fa.ator_id) asc;
 					
-
 /*19. Qual a maior duração da locação dentre os filmes?*/
+select max(duracao_da_locacao) as 'duracao (horas)'
+	from filme 
+		order by 1 desc;
 
 /*20. Quantos filmes possuem a maior duração de locação?*/
+select count(filme_id), duracao_da_locacao
+	from filme 
+		group by 2
+			having max(duracao_da_locacao) = 7;
+            
+	select count(*) qt from filme where duracao_da_locacao in (select max(duracao_da_locacao) from filme);
 
 /*21. Quantos filmes do idioma "JAPANESE" ou "GERMAN" possuem a maior duração de locação?*/
+select count(*) qt from filme as f 
+inner join idioma as i on f.idioma_id = i.idioma_id
+where lower(nome) in ('german', 'japanese')
+and duracao_Da_locacao = (select max(duracao_da_locacao) from filme);
 
 /*22. Qual a quantidade de filmes por classificação e preço da locação?*/
+select classificacao, preco_da_locacao, count(*) qt from filme
+group by classificacao, preco_da_locacao
+order by classificacao, preco_da_locacao asc;
 
 /*23. Qual o maior tempo de duração de filme por categoria?*/
-
+select max(f.duracao_do_filme) as 'Duração', c.nome as Categoria
+	from filme as f
+		inner join filme_categoria as fc 
+			on f.filme_id = fc.filme_id
+				inner join categoria as c
+					on c.categoria_id = fc.categoria_id
+						group by 2
+							order by 1 desc;
+                
 /*24. Listar a quantidade de filmes por categoria.*/
+select c.nome as Categoria, count(*) Quantidade
+	from filme as f
+		inner join filme_categoria as fc 
+			on f.filme_id = fc.filme_id
+				inner join categoria as c
+					on c.categoria_id = fc.categoria_id
+						group by 1
+							order by 2 desc;
 
 /*25. Listar a quantidade de filmes classificados como "G" por categoria.*/
 
 /*26. Listar a quantidade de filmes classificados como "G" OU "PG" por categoria.*/
 
 /*27. Listar a quantidade de filmes por categoria e classificação.*/
+select titulo, classificacao
 
 /*28. Qual a quantidade de filmes por Ator ordenando decrescente por quantidade?*/
 
