@@ -148,14 +148,17 @@ select f.classificacao, count(*) Quantidade, c.nome as categoria from filme as f
 						group by c.nome;
 						
 /*26. Listar a quantidade de filmes classificados como "G" OU "PG" por categoria.*/
-select c.nome Categoria, count(*) Quantidade -- , f.classificacao
+select c.nome Categoria, count(*) Quantidade -- ,f.classificacao
 	from filme f
 		inner join filme_categoria fc
 			on f.filme_id = fc.filme_id
 				inner join categoria c
 					on c.categoria_id = fc.categoria_id
 						where f.classificacao in ("PG", "G")
-							group by 1;
+							group by 1; -- ,3
+								-- order by 3 asc;
+-- detalhado
+
 
 /*27. Listar a quantidade de filmes por categoria e classificação.*/
 select count(*) as filmes, c.nome categoria, f.classificacao 
@@ -178,16 +181,20 @@ select count(*) filmes, a.primeiro_nome
 							order by 1 desc;
                             
 /*29. Qual a quantidade de filmes por ano de lançamento ordenando por quantidade crescente?*/
-select * from filme;
 select count(*) as filmes, ano_de_lancamento as "lançamento"
 	from filme 
 		group by 2 
 			order by 1 asc;
             
 /*30. Listar os anos de lançamento que possuem mais de 400 filmes?*/
-
+select count(*) as filmes, ano_de_lancamento as "lançamento"
+	from filme 
+		group by 2 
+			having count(*) > 400
+				order by 1 asc;
+            
 /*31. Listar os anos de lançamento dos filmes que possuem mais de 100 filmes com preço da locação maior que a média do preço da locação dos filmes da categoria "Children"?*/
-
+                
 /*32. Quais as cidades e seu pais correspondente que pertencem a um país que inicie com a Letra “E”?*/
 
 /*33. Qual a quantidade de cidades por pais em ordem decrescente?*/
