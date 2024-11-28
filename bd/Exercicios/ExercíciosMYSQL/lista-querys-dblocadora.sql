@@ -221,63 +221,105 @@ select count(c.cidade) cidades, p.pais
 	from cidade c
 		inner join pais p
 			on c.pais_id = p.pais_id
-				where cidade in (c.cidade like 'A%')
-				group by 2
-					order by 1 asc;
+		where cidade in (c.cidade like 'A%')
+	group by 2
+order by 1 asc;
 
 /*35. Quais os países que possuem mais de 3 cidades que iniciam com a Letra “A”?*/
 select p.pais, count(c.cidade) cidades
 	from pais p
 		inner join cidade c
 			on c.pais_id = p.pais_id
-				where c.cidade like 'A%' 
-					group by 1
-						having cidades > 3;
+		where c.cidade like 'A%' 
+		group by 1
+			having cidades > 3	
+		order by 2;
                         
 /*36. Quais os países que possuem mais de 3 cidades que iniciam com a Letra “A” ou tenha "R" ordenando por quantidade crescente?*/
 select p.pais, count(c.cidade) cidades
 	from pais p
 		inner join cidade c
 			on c.pais_id = p.pais_id
-				where c.cidade like 'A%' or c.cidade like 'R%'
-					group by 1
-						having cidades > 3
-							order by 2 asc;
+			where c.cidade like 'A%' or c.cidade like 'R%'
+		group by 1
+			having cidades > 3
+		order by 2 asc;
                         
 /*37. Quais os clientes moram no país “United States”?*/
-select cl.primeiro_nome, p.pais
+-- select cl.primeiro_nome, p.pais
+select concat_ws(' ',cl.primeiro_nome, cl.ultimo_nome) as nome, p.pais
 	from cliente cl
 		inner join endereco e
 			on cl.endereco_id = e.endereco_id
-				inner join cidade c
-					on c.cidade_id = e.cidade_id	
-						inner join pais p
-							on p.pais_id = c.pais_id
-								where p.pais = 'United States';
+		inner join cidade c
+			on c.cidade_id = e.cidade_id	
+		inner join pais p
+			on p.pais_id = c.pais_id
+where p.pais = 'United States';
 						
 /*38. Quantos clientes moram no país “Brazil”?*/
-select count(cl.primeiro_nome) clientes, p.pais
+select count(cl.primeiro_nome) clientes, p.pais 
 	from cliente cl
 		inner join endereco e
 			on cl.endereco_id = e.endereco_id
-				inner join cidade c
-					on c.cidade_id = e.cidade_id	
-						inner join pais p
-							on p.pais_id = c.pais_id
-								where p.pais = 'Brazil'
-									group by 2;
+		inner join cidade c
+			on c.cidade_id = e.cidade_id	
+		inner join pais p
+			on p.pais_id = c.pais_id
+	where p.pais = 'Brazil'
+group by 2;
 						
 /*39. Qual a quantidade de clientes por pais?*/
-
+select distinct count(*) over(partition by p.pais) clientes, p.pais
+	from cliente cl
+		inner join endereco e
+			on cl.endereco_id = e.endereco_id
+		inner join cidade c
+			on c.cidade_id = e.cidade_id	
+		inner join pais p
+			on p.pais_id = c.pais_id
+		order by 1 desc;
+            
 /*40. Quais países possuem mais de 10 clientes?*/
 
+-- consultar
+        
 /*41. Qual a média de duração dos filmes por idioma?*/
-
+select i.nome, avg(duracao_do_filme) media 
+	from filme f
+		inner join idioma i
+			on f.idioma_id = i.idioma_id
+		group by i.nome;
+        
 /*42. Qual a quantidade de atores que atuaram nos filmes do idioma “English”?*/
-
+select count(distinct fa.ator_id) atores, i.nome
+	from filme f
+		inner join idioma i
+			on f.idioma_id = i.idioma_id
+		inner join filme_ator fa
+			on fa.filme_id = f.filme_id
+		group by i.nome
+			having i.nome = 'english';
+        
 /*43. Quais os atores do filme “BLANKET BEVERLY”?*/
-
+select concat_ws(' ',a.primeiro_nome, ultimo_nome) atores
+	from filme f
+		inner join filme_ator fa
+			on fa.filme_id = f.filme_id
+		inner join ator a
+			on a.ator_id = fa.ator_id
+            where f.titulo = 'BLANKET BEVERLY';
+        
 /*44. Quais categorias possuem mais de 60 filmes cadastrados?*/
+select  c.nome, count(*) quantidade
+	from filme f
+		inner join filme_categoria fc 
+			on f.filme_id = fc.filme_id
+		inner join categoria c
+			on c.categoria_id = fc.categoria_id
+		group by 1
+	having quantidade > 60;
+
 
 /*45. Quais os filmes alugados (sem repetição) para clientes que moram na “Argentina”?*/
 
