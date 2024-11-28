@@ -157,8 +157,6 @@ select c.nome Categoria, count(*) Quantidade -- ,f.classificacao
 						where f.classificacao in ("PG", "G")
 							group by 1; -- ,3
 								-- order by 3 asc;
--- detalhado
-
 
 /*27. Listar a quantidade de filmes por categoria e classificação.*/
 select count(*) as filmes, c.nome categoria, f.classificacao 
@@ -177,7 +175,7 @@ select count(*) filmes, a.primeiro_nome
 			on f.filme_id = fa.filme_id
 				inner join ator a
 					on a.ator_id = fa.ator_id
-						group by 2
+						group by 2 
 							order by 1 desc;
                             
 /*29. Qual a quantidade de filmes por ano de lançamento ordenando por quantidade crescente?*/
@@ -194,21 +192,81 @@ select count(*) as filmes, ano_de_lancamento as "lançamento"
 				order by 1 asc;
             
 /*31. Listar os anos de lançamento dos filmes que possuem mais de 100 filmes com preço da locação maior que a média do preço da locação dos filmes da categoria "Children"?*/
-                
+    select ano_de_lancamento, count(*) qt_filme from filme 
+    where preco_da_locacao > (
+        select avg(preco_da_locacao) from filme as f 
+        inner join filme_categoria as fc on f.filme_id = fc.filme_id
+        inner join categoria as c on c.categoria_id = fc.categoria_id
+        where c.nome = 'Children')
+    group by ano_de_lancamento
+    having count(*) > 100;
+
 /*32. Quais as cidades e seu pais correspondente que pertencem a um país que inicie com a Letra “E”?*/
+select c.cidade, p.pais 
+	from cidade c
+		inner join pais p
+			on c.pais_id = p.pais_id
+				where p.pais like 'E%';
 
 /*33. Qual a quantidade de cidades por pais em ordem decrescente?*/
+select count(c.cidade), p.pais 
+	from cidade c
+		inner join pais p
+			on c.pais_id = p.pais_id
+				group by 2
+					order by 1 desc;
 
 /*34. Qual a quantidade de cidades que iniciam com a Letra “A” por pais em ordem crescente?*/
+select count(c.cidade) cidades, p.pais 
+	from cidade c
+		inner join pais p
+			on c.pais_id = p.pais_id
+				where cidade in (c.cidade like 'A%')
+				group by 2
+					order by 1 asc;
 
 /*35. Quais os países que possuem mais de 3 cidades que iniciam com a Letra “A”?*/
-
+select p.pais, count(c.cidade) cidades
+	from pais p
+		inner join cidade c
+			on c.pais_id = p.pais_id
+				where c.cidade like 'A%' 
+					group by 1
+						having cidades > 3;
+                        
 /*36. Quais os países que possuem mais de 3 cidades que iniciam com a Letra “A” ou tenha "R" ordenando por quantidade crescente?*/
-
+select p.pais, count(c.cidade) cidades
+	from pais p
+		inner join cidade c
+			on c.pais_id = p.pais_id
+				where c.cidade like 'A%' or c.cidade like 'R%'
+					group by 1
+						having cidades > 3
+							order by 2 asc;
+                        
 /*37. Quais os clientes moram no país “United States”?*/
-
+select cl.primeiro_nome, p.pais
+	from cliente cl
+		inner join endereco e
+			on cl.endereco_id = e.endereco_id
+				inner join cidade c
+					on c.cidade_id = e.cidade_id	
+						inner join pais p
+							on p.pais_id = c.pais_id
+								where p.pais = 'United States';
+						
 /*38. Quantos clientes moram no país “Brazil”?*/
-
+select count(cl.primeiro_nome) clientes, p.pais
+	from cliente cl
+		inner join endereco e
+			on cl.endereco_id = e.endereco_id
+				inner join cidade c
+					on c.cidade_id = e.cidade_id	
+						inner join pais p
+							on p.pais_id = c.pais_id
+								where p.pais = 'Brazil'
+									group by 2;
+						
 /*39. Qual a quantidade de clientes por pais?*/
 
 /*40. Quais países possuem mais de 10 clientes?*/
