@@ -349,12 +349,76 @@ where pais = 'Argentina';
 
 /*49. Quais Filmes possuem preço da Locação maior que a média de preço da locação?*/
 
-/*50. Qual a soma da duração dos Filmes por categoria?*/
+select * 
+	from filme 
+where preco_da_locacao > (select avg(preco_da_locacao) from filme);
 
+/*50. Qual a soma da duração dos Filmes por categoria?*/
+select c.nome, sum(duracao_do_filme) soma_duracao 
+	from filme f
+		inner join filme_categoria fc
+			on f.filme_id = fc.filme_id
+		inner join categoria c
+			on c.categoria_id = fc.categoria_id
+		group by 1;
+        
 /*51. Qual a quantidade de filmes locados mês a mês por ano? */
+select count(f.filme_id) filmes, year(a.data_de_aluguel) ano,
+	case
+    WHEN MONTH(a.data_de_aluguel) = 1 THEN 'Janeiro'
+    WHEN MONTH(a.data_de_aluguel) = 2 THEN 'Fevereiro'
+    WHEN MONTH(a.data_de_aluguel) = 3 THEN 'Março'
+    WHEN MONTH(a.data_de_aluguel) = 4 THEN 'Abril'
+    WHEN MONTH(a.data_de_aluguel) = 5 THEN 'Maio'
+    WHEN MONTH(a.data_de_aluguel) = 6 THEN 'Junho'
+    WHEN MONTH(a.data_de_aluguel) = 7 THEN 'Julho'
+    WHEN MONTH(a.data_de_aluguel) = 8 THEN 'Agosto'
+    WHEN MONTH(a.data_de_aluguel) = 9 THEN 'Setembro'
+    WHEN MONTH(a.data_de_aluguel) = 10 THEN 'Outubro'
+    WHEN MONTH(a.data_de_aluguel) = 11 THEN 'Novembro'
+    WHEN MONTH(a.data_de_aluguel) = 12 THEN 'Dezembro'
+end as 'mês'
+	from filme f
+		inner join inventario i
+			on f.filme_id = i.filme_id
+		inner join aluguel a
+			on a.inventario_id = i.inventario_id
+            group by 2, 3
+				order by 2 asc;
 
 /*52. Qual o total pago por classificação de filmes alugados no ano de 2006?*/
-
+select sum(p.valor) total, f.classificacao
+	from filme f
+		inner join inventario i
+			on f.filme_id = i.filme_id
+		inner join aluguel a
+			on a.inventario_id = i.inventario_id
+		inner join pagamento p
+			on p.aluguel_id = a.aluguel_id
+            where date_format(a.data_de_aluguel, "%Y") = 2006
+		group by 2
+	order by 1 desc;
+            
 /*53. Qual a média mensal do valor pago por filmes alugados no ano de 2005?*/
-
+select f.titulo, sum(p.valor), f.classificacao
+	from filme f
+		inner join inventario i
+			on f.filme_id = i.filme_id
+		inner join aluguel a
+			on a.inventario_id = i.inventario_id
+		inner join pagamento p
+			on p.aluguel_id = a.aluguel_id
+            where ano_de_lancamento = "2006"
+		group by 1, 3;
+    
 /*54. Qual o total pago por filme alugado no mês de Junho de 2006 por cliente? -----    CORRIGIR  */
+
+-- =====================================================
+-- EXtras ----------------------------------------------
+-- =====================================================
+/*
+Formatando nome de datas pra PT-BR:
+	set lc_time_names=pt_BR;
+
+
+*/
