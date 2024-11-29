@@ -320,9 +320,27 @@ select  c.nome, count(*) quantidade
 		group by 1
 	having quantidade > 60;
 
-
 /*45. Quais os filmes alugados (sem repetição) para clientes que moram na “Argentina”?*/
-
+create or replace view filme_cliente_pais as (
+select f.titulo, p.pais from pais p
+	inner join cidade as c
+		on p.pais_id = c.pais_id
+	inner join endereco as e
+		on e.cidade_id = c.cidade_id
+	inner join cliente as cl
+		on cl.endereco_id = e.endereco_id 
+	inner join aluguel a
+		on a.cliente_id = cl.cliente_id
+	inner join inventario as i
+		on i.inventario_id = a.inventario_id
+	inner join filme as f
+		on f.filme_id = i.filme_id
+        order by f.titulo);
+        
+select distinct titulo 	
+	from filme_cliente_pais
+where pais = 'Argentina';
+         
 /*46. Qual a quantidade de filmes alugados por Clientes que moram na “Chile”?*/
 
 /*47. Qual a quantidade de filmes alugados por funcionario?*/
