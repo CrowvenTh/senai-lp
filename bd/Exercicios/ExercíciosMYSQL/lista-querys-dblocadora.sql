@@ -1,5 +1,7 @@
 /*LISTA DE BANCO DE DADOS COM SAKILA TRADUZIDO PARA PORTUGUÊS*/
 
+use locadora;
+
 /*1. Quais os países cadastrados?*/
 select pais from pais;
 
