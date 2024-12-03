@@ -284,7 +284,17 @@ select distinct count(*) over(partition by p.pais) clientes, p.pais
             
 /*40. Quais países possuem mais de 10 clientes?*/
 
--- consultar
+ select         
+        p.pais,
+        count(*) qt_cidade,
+        group_concat(c.cidade) cidades
+    from cliente as cli
+    inner join endereco as e on cli.endereco_id = e.endereco_id
+    inner join cidade as c on e.cidade_id = c.cidade_id
+    inner join pais as p on c.pais_id = p.pais_id
+    group by p.pais
+    having qt_cidade > 10
+    order by p.pais;
         
 /*41. Qual a média de duração dos filmes por idioma?*/
 select i.nome, avg(duracao_do_filme) media 
@@ -344,13 +354,31 @@ select distinct titulo
 where pais = 'Argentina';
          
 /*46. Qual a quantidade de filmes alugados por Clientes que moram na “Chile”?*/
+select * from filme 
+    where preco_da_locacao > (select avg(preco_da_locacao) from filme);
 
 /*47. Qual a quantidade de filmes alugados por funcionario?*/
+ select c.nome, fu.primeiro_nome, fu.ultimo_nome, count(*) quantidade
+    from funcionario as fu
+    inner join aluguel as a on fu.funcionario_id = a.funcionario_id
+    inner join inventario as i on i.inventario_id = a.inventario_id
+    inner join filme as f on f.filme_id = i.filme_id
+    inner join filme_categoria as fc on f.filme_id = fc.filme_id
+    inner join categoria as c on fc.categoria_id = c.categoria_id
+    group by c.nome, fu.primeiro_nome, fu.ultimo_nome;
 
 /*48. Qual a quantidade de filmes alugados por funcionario para cada categoria?*/
-
+    select f.primeiro_nome, f.ultimo_nome , count(*) quantidade
+    from funcionario as f 
+    inner join aluguel as a on f.funcionario_id = a.funcionario_id
+    inner join inventario as i on i.inventario_id = a.inventario_id
+    group by f.primeiro_nome, f.ultimo_nome;
+	
 /*49. Quais Filmes possuem preço da Locação maior que a média de preço da locação?*/
-
+ select count(*) qt_aluguel, count(distinct titulo) qt_filme
+    from filme_cliente_pais
+    where pais = 'Chile';
+-- OR
 select * 
 	from filme 
 where preco_da_locacao > (select avg(preco_da_locacao) from filme);
@@ -414,7 +442,18 @@ select f.titulo, sum(p.valor), f.classificacao
 		group by 1, 3;
     
 /*54. Qual o total pago por filme alugado no mês de Junho de 2006 por cliente? -----    CORRIGIR  */
-
+ select 
+		f.titulo titulo, 
+		concat_ws(' ',c.primeiro_nome, c.ultimo_nome) nome_completo,
+        sum(valor) total_pago
+	from cliente as c 
+    inner join pagamento as p on c.cliente_id = p.cliente_id
+    inner join aluguel as a on a.aluguel_id = p.aluguel_id
+    inner join inventario as i on a.inventario_id = i.inventario_id
+    inner join filme as f on i.filme_id = f.filme_id
+    where data_de_aluguel like '2005-06%'
+    group by titulo, nome_completo
+    order by 1 , 2;
 -- =====================================================
 -- EXtras ----------------------------------------------
 -- =====================================================
