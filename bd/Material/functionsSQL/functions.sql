@@ -60,12 +60,14 @@ SELECT REPLACE('SEMAI','M','N');
 
 -- REVERSE(): Inverte a string.
 SELECT REVERSE('123456789');
+SELECT REVERSE('senai');
 
 -- SPACE(): Retorna uma string de espaços.
 SELECT CONCAT('X',SPACE(50),'X');
 
 -- STRCMP(): Compara strings, retona 0 quando forem iguais.
 SELECT STRCMP('SENAI','SENAI');
+SELECT STRCMP('SENAI','SENAIEAD');
 
 -- 2. Numeric Functions
 -- ABS(): Retorna o valor absoluto.
@@ -91,6 +93,7 @@ SELECT POW(4,2);
 
 -- RAND(): Retorna um número aleatório.
 SELECT RAND();
+SELECT floor(RAND()*10);
 
 -- ROUND(): Arredonda um número.
 SELECT ROUND(2.5), ROUND(2.4);
@@ -102,7 +105,7 @@ SELECT SIGN(-8459), SIGN(0), SIGN(56);
 SELECT SQRT(64), SQRT(9), SQRT(4);
 
 -- TRUNCATE(): Trunca um número para o número especificado de casas decimais.
-SELECT TRUNCATE(2.636,2), TRUNCATE(2.636,1), TRUNCATE(2.636,0);
+SELECT TRUNCATE(2.636,2), TRUNCATE(2.636,1), TRUNCATE(2.636,0), TRUNCATE(2.636,3);
 
  -- 3. Date and Time Functions
 -- ADDDATE() / DATE_ADD(): Adiciona um intervalo a uma data.
