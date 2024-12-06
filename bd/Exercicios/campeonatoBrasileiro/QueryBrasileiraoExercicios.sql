@@ -49,7 +49,7 @@ update partida set gol_mandante = 1, gol_visitante = 1 where id_partida = 360;
 update partida set gol_mandante = 0, gol_visitante = 1 where id_partida = 361;
 update partida set gol_mandante = 1, gol_visitante = 2 where id_partida = 362;
 update partida set gol_mandante = 1, gol_visitante = 1 where id_partida = 363;
-update partida set gol_mandante = 1, gol_visitante = 1 where id_partida = 364; -- indeifindo
+update partida set gol_mandante = 1, gol_visitante = 1 where id_partida = 364; -- indefinido
 update partida set gol_mandante = 2, gol_visitante = 0 where id_partida = 365;
 update partida set gol_mandante = 3, gol_visitante = 0 where id_partida = 366;
 update partida set gol_mandante = 1, gol_visitante = 2 where id_partida = 367;
@@ -61,12 +61,11 @@ update partida set gol_mandante = 0, gol_visitante = 3 where id_partida = 370;
 -- 03. Elabore um relatório por minuto e a quantidade de gols (não contar "Gol anulado (Var)")
 -- e ordene pela quantidade do maior para o menor
 select * from evento;
-select minuto, 
-	(select count(descricao) 
-		where descricao = "Gol (Gol de campo)" 
-	group by 1) 
-	from evento;
-	
+select minuto, count(descricao) as Gols
+	from evento
+	where descricao like "Gol%" and descricao not like "Gol anulado (Var)"
+	group by 1
+order by 2 desc;
 
 -- 04. Elabore um relatório por idade e quantidade de jogadores
 show tables;
@@ -78,4 +77,20 @@ select (year(curdate()) - year(dt_nascimento)) as idade,
 
 -- 05. Elabore um relatório por jogador e quantidade de cartões, 
 -- detalhar também a quantidade de Cartões Vermelho e Amarelo
--- ordene pela quantidade total de Cartões'
+-- ordene pela quantidade total de Cartões'.
+
+select * from jogador;
+select * from evento;
+	-- count(if(e.descricao = "Cartão Amarelo")) as "Cartões Amarelos"
+ 	-- count(if(e.descricao = "Cartão Vermelho")) as "Cartões vermelhos", 
+select j.nome,
+		case
+			when e.descricao = "Cartão Vermelho" then count(descricao) as "Cartões vermelhos"
+			when e.descricao = "Cartão amarelo" then count(descricao) as "Cartões amarelos"		
+		end
+	from jogador j
+		inner join evento e 
+			on e.id_jogador = j.id_jogador
+		group by 1
+	order by 2 desc;
+	
