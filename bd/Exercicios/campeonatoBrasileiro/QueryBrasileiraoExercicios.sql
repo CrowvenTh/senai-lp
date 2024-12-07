@@ -83,14 +83,14 @@ select * from jogador;
 select * from evento;
 	-- count(if(e.descricao = "Cartão Amarelo")) as "Cartões Amarelos"
  	-- count(if(e.descricao = "Cartão Vermelho")) as "Cartões vermelhos", 
-select j.nome,
-		case
-			when e.descricao = "Cartão Vermelho" then count(descricao) as "Cartões vermelhos"
-			when e.descricao = "Cartão amarelo" then count(descricao) as "Cartões amarelos"		
-		end
+select j.nome, 
+		sum(if(e.descricao like "%Amarelo%", 1, 0)) as "Cartões Amarelos",
+		sum(if(e.descricao like "%Vermelho%", 1, 0)) as "Cartões Vermelhos",
+		sum(if(e.descricao like "%Vermelho%" and e.descricao like "%Amarelo%", 2, 1)) as "Cartões Recebidos"
 	from jogador j
 		inner join evento e 
 			on e.id_jogador = j.id_jogador
-		group by 1
-	order by 2 desc;
+		group by nome
+	order by "Cartões Recebidos";
+
 	
