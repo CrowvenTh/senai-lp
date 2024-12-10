@@ -1,4 +1,3 @@
-
 use campeonatobrasileiro;
 
 -- 01. Atualize na tabela evento as descrições 
@@ -116,19 +115,20 @@ select j.numero, j.nome,
 				where descricao like "Cartao%"
 		group by numero, nome
 	order by 5 desc;
--- Correção 
-select 
-	numero,
-    nome ,
-    -- count(*) qt_cartoes,
-    sum(if(descricao like '%Amarelo%' , 1 , 0)) qt_amarelo,
-    sum(if(descricao like '%Vermelho%' , 1 , 0)) qt_vermelho,
-    sum(if(descricao like '%Amarelo%' and descricao like '%Vermelho%', 2 , 1)) qt_total
-from jogador as j
-inner join evento as e on j.id_jogador = e.id_jogador
-where descricao like 'Cartão%' -- and id_partida like '338'
-group by numero, nome
-order by qt_total desc;
+
+-- outro método 
+select tb.*,
+		qt_amarelo + qt_vermelho as total
+	from (
+	select 
+		numero,
+	    nome,
+	    sum(if(descricao like '%Amarelo%' , 1 , 0)) qt_amarelo,
+	    sum(if(descricao like '%Vermelho%' , 1 , 0)) qt_vermelho
+	from jogador as j
+	inner join evento as e on j.id_jogador = e.id_jogador
+	where descricao like 'Cartão%'
+	group by numero, nome) as tb order by total desc;
 	
 -- 06. Deseja-se saber qual a quantidade de jogos que aconteceram por dia
 /* exemplo:
@@ -182,14 +182,17 @@ BOT		10				2				1
 .
 .
 */
+select count(*) from evento where descricao = "Bola na Trave";
+
 select t.sigla, 
-	(select * from evento where descricao = "Bola na Trave")
--- 	sum(if(e.descricao like "%Bola na Trave%", 1, 0) as Bolas na trave,
---	sum(if(e.descricao like "Pênalti Perdido%", 1, 0) as Pênalti Perdido,
---	sum(if(e.descricao like "%Gol anulado (Var)%", 1, 0) as Gol anulado (Var)
-	from evento e
-		inner join jogador j
-			on j.id_jogador = e.id_jogador 
-		inner join time t 
-			on t.id_time = j.id_time
-	group by 1;
+			sum(if(e.descricao = "Bola na Trave", 1, 0)) as "Bola na Trave", 
+			sum(if(e.descricao = "Pênalti Perdido", 1, 0)) as "Pênalti Perdido", 
+			sum(if(e.descricao = "Gol anulado (Var)", 1, 0)) as "Gol anulado (Var)"
+	from time as t
+		inner join jogador as j
+			on j.id_time = t.id_time
+		inner join evento as e
+			on j.id_jogador = e.id_jogador
+		group by t.sigla;
+		
+	
