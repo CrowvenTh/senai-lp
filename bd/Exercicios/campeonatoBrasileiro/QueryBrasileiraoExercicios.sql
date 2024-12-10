@@ -5,7 +5,6 @@ use campeonatobrasileiro;
 -- DE "Substitution" PARA "Substituição"
 -- DE "Woodwork" PARA "Bola na Trave"
 -- DE "Cartão Vermelho (Second Yellow Card)" PARA "Cartão Vermelho (Segundo Cartão Amarelo)"
-
 select * from campeonatobrasileiro.evento;
 update campeonatobrasileiro.evento set descricao = "Substituição" where descricao = "Substitution";
 update campeonatobrasileiro.evento set descricao = "Bola na Trave" where descricao = "Woodwork";
@@ -49,14 +48,24 @@ update partida set gol_mandante = 1, gol_visitante = 1 where id_partida = 360;
 update partida set gol_mandante = 0, gol_visitante = 1 where id_partida = 361;
 update partida set gol_mandante = 1, gol_visitante = 2 where id_partida = 362;
 update partida set gol_mandante = 1, gol_visitante = 1 where id_partida = 363;
-update partida set gol_mandante = 1, gol_visitante = 1 where id_partida = 364; -- indefinido
+update partida set gol_mandante = 1, gol_visitante = 0 where id_partida = 364; -- indefinido
 update partida set gol_mandante = 2, gol_visitante = 0 where id_partida = 365;
 update partida set gol_mandante = 3, gol_visitante = 0 where id_partida = 366;
 update partida set gol_mandante = 1, gol_visitante = 2 where id_partida = 367;
-update partida set gol_mandante = 0, gol_visitante = 1 where id_partida = 368; -- indefinido
+update partida set gol_mandante = 1, gol_visitante = 2 where id_partida = 368; -- indefinido
 update partida set gol_mandante = 3, gol_visitante = 1 where id_partida = 369;
 update partida set gol_mandante = 0, gol_visitante = 3 where id_partida = 370;
-
+-- rodada 38
+update partida set gol_mandante = 0, gol_visitante = 3 where id_partida = 371;
+update partida set gol_mandante = 1, gol_visitante = 0 where id_partida = 372;
+update partida set gol_mandante = 2, gol_visitante = 0 where id_partida = 373;
+update partida set gol_mandante = 2, gol_visitante = 2 where id_partida = 374;
+update partida set gol_mandante = 2, gol_visitante = 1 where id_partida = 375;
+update partida set gol_mandante = 0, gol_visitante = 1 where id_partida = 376;
+update partida set gol_mandante = 5, gol_visitante = 1 where id_partida = 377;
+update partida set gol_mandante = 3, gol_visitante = 0 where id_partida = 378;
+update partida set gol_mandante = 1, gol_visitante = 2 where id_partida = 379;
+update partida set gol_mandante = 0, gol_visitante = 1 where id_partida = 380;
 
 -- 03. Elabore um relatório por minuto e a quantidade de gols (não contar "Gol anulado (Var)")
 -- e ordene pela quantidade do maior para o menor
@@ -68,17 +77,35 @@ select minuto, count(descricao) as Gols
 order by 2 desc;
 
 -- 04. Elabore um relatório por idade e quantidade de jogadores
-show tables;
+-- remover data nula e posições "Auxiliar técnico" e "Técnico"
+-- ordene pela idade do mais velho ao mais novo
 select (year(curdate()) - year(dt_nascimento)) as idade, 
 		count(id_jogador) jogadores 
-	from jogador
-	group by 1;
--- order by idade desc;
+	from jogador 
+		where dt_nascimento is not null and posicao not in ('Auxiliar técnico','Técnico')
+	group by 1
+order by idade desc;
+-- OU
+select 
+	2024 - year(dt_nascimento) idade, 
+    count(*) quantidade
+from jogador
+where dt_nascimento is not null and posicao not in ('Auxiliar técnico','Técnico')
+group by idade
+order by idade desc;
 
 -- 05. Elabore um relatório por jogador e quantidade de cartões, 
 -- detalhar também a quantidade de Cartões Vermelho e Amarelo
--- ordene pela quantidade total de Cartões'.
-
+-- ordene pela quantidade total de Cartões'
+/* exemplo:
+numero 	nome 			qt_amarelo 	qt_vermelho qt_total
+16		Jadson			15			1			16
+19		Emanuel Brítez	12			2			14
+3		Zé Marcos		12			2			14
+10		Luciano			12			1			13
+.
+.
+*/
 select * from jogador;
 select * from evento;
 	-- count(if(e.descricao = "Cartão Amarelo")) as "Cartões Amarelos"
@@ -93,4 +120,62 @@ select j.nome,
 		group by nome
 	order by "Cartões Recebidos";
 
+select 
+	numero,
+    nome ,
+    -- count(*) qt_cartoes,
+    sum(if(descricao like '%Amarelo%' , 1 , 0)) qt_amarelo,
+    sum(if(descricao like '%Vermelho%' , 1 , 0)) qt_vermelho,
+    sum(if(descricao like '%Amarelo%' and descricao like '%Vermelho%', 2 , 1)) qt_total
+from jogador as j
+inner join evento as e on j.id_jogador = e.id_jogador
+where descricao like 'Cartão%' -- and id_partida like '338'
+group by numero, nome
+order by qt_total desc;
 	
+-- 06. Deseja-se saber qual a quantidade de jogos que aconteceram por dia
+/* exemplo:
+dia		quantidade
+sábado	98
+domingo	121
+terça	11
+quarta	64
+quinta	29
+segunda	11
+sexta	8
+*/
+select * from partida;
+set lc_time_names=pt_BR;
+
+select dayname(horario) dia, count(*) quantidade
+	from partida
+group by 1;
+
+-- 07. Desejase saber a quantidade total de cada evento 
+-- e quantos aconteceram ate os 45min e depois dos 45min
+/*exemplo:
+descricao									total	ate_45		depois_45
+Gol (Gol de campo)							734		327			407
+Cartão Amarelo								1806	658			1148
+Substituição								3256	112			3144
+Bola na Trave								217		93			124
+Pênalti Perdido								23		12			11
+Cartão Vermelho								80		25			55
+Gol anulado (Var)							39		17			22
+Cartão Vermelho (Segundo Cartão Amarelo)	44		7			37
+Gol (Pênalti)								71		37			34
+Gol (Gol Contra)							14		5			9
+*/
+
+-- 08. Deseja-se saber a quantidade dos eventos:
+-- "Bola na Trave", "Pênalti Perdido" , "Gol anulado (Var)" pelos clubes
+/*exemplo:
+sigla 	Bola na Trave 	Pênalti Perdido Gol anulado (Var)
+ACG		4				2				2
+CAP		12				1				1
+CAM		16				1				3
+BAH		12				0				1
+BOT		10				2				1
+.
+.
+*/
