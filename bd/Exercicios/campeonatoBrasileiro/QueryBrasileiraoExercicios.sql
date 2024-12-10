@@ -182,3 +182,14 @@ BOT		10				2				1
 .
 .
 */
+select t.sigla, 
+	(select * from evento where descricao = "Bola na Trave")
+-- 	sum(if(e.descricao like "%Bola na Trave%", 1, 0) as Bolas na trave,
+--	sum(if(e.descricao like "Pênalti Perdido%", 1, 0) as Pênalti Perdido,
+--	sum(if(e.descricao like "%Gol anulado (Var)%", 1, 0) as Gol anulado (Var)
+	from evento e
+		inner join jogador j
+			on j.id_jogador = e.id_jogador 
+		inner join time t 
+			on t.id_time = j.id_time
+	group by 1;
