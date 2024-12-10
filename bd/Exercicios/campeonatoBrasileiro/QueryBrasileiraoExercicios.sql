@@ -106,20 +106,17 @@ numero 	nome 			qt_amarelo 	qt_vermelho qt_total
 .
 .
 */
-select * from jogador;
-select * from evento;
-	-- count(if(e.descricao = "Cartão Amarelo")) as "Cartões Amarelos"
- 	-- count(if(e.descricao = "Cartão Vermelho")) as "Cartões vermelhos", 
-select j.nome, 
+select j.numero, j.nome, 
 		sum(if(e.descricao like "%Amarelo%", 1, 0)) as "Cartões Amarelos",
 		sum(if(e.descricao like "%Vermelho%", 1, 0)) as "Cartões Vermelhos",
 		sum(if(e.descricao like "%Vermelho%" and e.descricao like "%Amarelo%", 2, 1)) as "Cartões Recebidos"
 	from jogador j
 		inner join evento e 
 			on e.id_jogador = j.id_jogador
-		group by nome
-	order by "Cartões Recebidos";
-
+				where descricao like "Cartao%"
+		group by numero, nome
+	order by 5 desc;
+-- Correção 
 select 
 	numero,
     nome ,
@@ -166,6 +163,12 @@ Cartão Vermelho (Segundo Cartão Amarelo)	44		7			37
 Gol (Pênalti)								71		37			34
 Gol (Gol Contra)							14		5			9
 */
+select descricao, 
+	count(*) as total, 
+	sum(if(minuto <= 45, 1, 0)) as "1° tempo",
+	sum(if(minuto > 45, 1, 0)) as "2° tempo"
+	from evento
+group by 1;
 
 -- 08. Deseja-se saber a quantidade dos eventos:
 -- "Bola na Trave", "Pênalti Perdido" , "Gol anulado (Var)" pelos clubes
