@@ -209,6 +209,18 @@ select
 	count(if(2024 - year(dt_nascimento) between 40 and 49, 1, null)) as "Entre 40 e 49"
 from jogador;
 
+
+select 
+	concat('Entre ',idade,'0 e ',idade,'9') faixa_etaria,
+	jogadores
+from 
+(select (2024 - year(dt_nascimento)) div 10 as idade, 
+		count(id_jogador) jogadores 
+	from jogador 
+		where dt_nascimento is not null and posicao not in ('Auxiliar técnico','Técnico')
+	group by 1
+order by idade desc) tb;
+
 -- 10. Deseja-se saber o total de gols em cada estádio
 /*exemplo:
 nome_estadio									quantidade
