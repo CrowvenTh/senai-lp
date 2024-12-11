@@ -182,8 +182,6 @@ BOT		10				2				1
 .
 .
 */
-select count(*) from evento where descricao = "Bola na Trave";
-
 select t.sigla, 
 			sum(if(e.descricao = "Bola na Trave", 1, 0)) as "Bola na Trave", 
 			sum(if(e.descricao = "Pênalti Perdido", 1, 0)) as "Pênalti Perdido", 
@@ -196,3 +194,34 @@ select t.sigla,
 		group by t.sigla;
 		
 	
+-- 09. Deseja-se saber a quantidade de jogador por faixa etária
+/*exemplo:
+faixa_etaria	qt
+Entre 30 e39	191
+Entre 20 e29	405
+Entre 10 e19	30
+Entre 40 e49	4
+*/
+select 2024 - year(dt_nascimento) as idade
+	from jogador
+group by 1;
+
+-- 10. Deseja-se saber o total de gols em cada estádio
+/*exemplo:
+nome_estadio									quantidade
+Mineirão (Estádio Governador Magalhães Pinto)	87
+Morumbi (Estádio Cícero Pompeu de Toledo)		80
+Maracanã										77
+Neo Química Arena								48
+Estádio Alfredo Jaconi							48
+*/
+select descricao from evento;
+select es.nome, count(ev.descricao) as Gols
+	from estadio as es
+		inner join partida as p
+			on p.id_estadio = es.id_estadio
+		inner join evento as ev
+			on ev.id_partida = p.id_partida
+				where ev.descricao = "Gol (Gol de campo)"
+			group by 1;
+	--	order by 2 desc;
