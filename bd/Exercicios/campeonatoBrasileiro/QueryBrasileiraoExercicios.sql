@@ -193,7 +193,6 @@ select t.sigla,
 			on j.id_jogador = e.id_jogador
 		group by t.sigla;
 		
-	
 -- 09. Deseja-se saber a quantidade de jogador por faixa etária
 /*exemplo:
 faixa_etaria	qt
@@ -202,9 +201,13 @@ Entre 20 e29	405
 Entre 10 e19	30
 Entre 40 e49	4
 */
-select 2024 - year(dt_nascimento) as idade
-	from jogador
-group by 1;
+	
+select 
+	count(if(2024 - year(dt_nascimento) between 30 and 39, 1, null)) as "Entre 30 e 39",
+	count(if(2024 - year(dt_nascimento) between 20 and 29, 1, null)) as "Entre 20 e 29",
+	count(if(2024 - year(dt_nascimento) between 10 and 19, 1, null)) as "Entre 10 e 19",
+	count(if(2024 - year(dt_nascimento) between 40 and 49, 1, null)) as "Entre 40 e 49"
+from jogador;
 
 -- 10. Deseja-se saber o total de gols em cada estádio
 /*exemplo:
