@@ -7,6 +7,8 @@ create table usuarios (
  	primary key (id)
 );
 
+-- drop procedure adicionar_usuario; -- deletando procedure
+
 delimiter $$
 
 create procedure adicionar_usuario(nome varchar(100), email varchar(100))
