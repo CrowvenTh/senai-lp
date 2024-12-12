@@ -23,3 +23,17 @@ call adicionar_usuario('Luiz Felipe','luiz@gmail.com');
 call adicionar_usuario('Elon Musk','elon@gmail.com');
 
 select * from usuarios;
+
+-- Exemplo com parâmetros de saida: Uma procedure que retorna a quantidade de usuarios em uma tabela:  
+
+delimiter $$
+
+create procedure contar_usuarios(out quantidade int)
+begin 
+	select count(*) into quantidade from usuarios; 
+end$$
+
+delimiter ;
+
+call contar_usuarios(@total);
+select @total;
