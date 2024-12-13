@@ -57,3 +57,24 @@ call atualizar_email(5, 'novo_email@gmail.com');
 call atualizar_email(1, 'novo_email@gmail.com');
 
 select * from usuarios;
+
+-- atualizar gols da partida
+
+delimiter $$
+
+create procedure atualizar_gol_partida(m_sigla varchar(3), m_gol int, v_gol int, v_sigla varchar(3))
+begin 
+	declare idpartida int;
+		set id_partida = (select id_partida from partida
+			where id_mandante = (select id_time from time where sigla = m_sigla ) and 
+					id_visitante = (select id_time from time where sigla = v_sigla));
+				
+				update partida set gol_mandante = m_gol, gol_visitante = v_gol where id_partida = idpartida;
+end$$
+
+delimiter ;
+
+call atualizar_gol_partida('FLU', 0, 0, 'CRI');
+
+select * from time;
+
