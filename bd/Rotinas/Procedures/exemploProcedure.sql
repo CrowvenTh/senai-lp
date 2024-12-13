@@ -37,3 +37,23 @@ delimiter ;
 
 call contar_usuarios(@total);
 select @total;
+
+-- exemplo com logica condicional, uma procedure que atualiza um registro somente se eke existir:
+
+delimiter $$
+
+create procedure atualizar_email(id_usuario int, novo_email varchar(100))
+begin 
+	if exists (select 1 from usuarios where id = id_usuario) then 
+	update usuarios set email = novo_email where id = id_usuario;
+	else
+		signal sqlstate '45000' set message_text = 'Usuário não encontrado';
+	end if;
+end$$
+
+delimiter ;
+
+call atualizar_email(5, 'novo_email@gmail.com');
+call atualizar_email(1, 'novo_email@gmail.com');
+
+select * from usuarios;
