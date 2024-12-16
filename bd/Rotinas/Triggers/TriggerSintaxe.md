@@ -24,7 +24,8 @@ Explicação dos Elementos:
 - BEFORE ou AFTER:
 - BEFORE: A ação ocorre antes do evento especificado.
 - AFTER: A ação ocorre após o evento especificado.
-- Eventos:
+
+Eventos:
 - INSERT: Quando um registro é inserido.
 - UPDATE: Quando um registro é atualizado.
 - DELETE: Quando um registro é excluído.
