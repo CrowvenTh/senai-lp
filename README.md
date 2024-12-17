@@ -19,6 +19,8 @@ Repositório dedicado aos conteúdos realizados durante o curso de *Lógica de p
     |  │   ├── 
     |  ├── Exercicios
     |  │   ├── 
+    |  ├── FunçõesSQL
+    |  │   ├── 
     |  ├── Material
     |  │   ├── 
     |  ├── Rotinas
