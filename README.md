@@ -8,6 +8,39 @@ Repositório dedicado aos conteúdos realizados durante o curso de *Lógica de p
 
 --- 
 
+<details>
+<summary> Estrutura </summary>
+
+    SENAI-LP/ A pasta SENAI-LP é a raiz de todos os projetos desse curso 
+    ├── bd
+    |  ├── brModelo
+    |  │   ├── 
+    |  ├── Diagramas
+    |  │   ├── 
+    |  ├── Exercicios
+    |  │   ├── 
+    |  ├── Material
+    |  │   ├── 
+    |  ├── Rotinas
+    |  │   ├── 
+    |     
+    ├── livroJs
+    |  ├── cap01
+    |  ├── cap02
+    |  ├── cap04
+    |  ├── cap05
+    |  ├── projeto2
+    |  ├── ComandoGIT.md
+    |  ├── Ebook.pdf
+    |  ├── comandosCMD.md
+    |  
+    ├── index.css
+    ├── index.html
+    ├── indexII.html
+    ├── README.md
+    
+</details>
+
 ## 🧮 lista de functions no MySQL usar o help pra entender como usar cada função.
 
 # **1. String Functions**
