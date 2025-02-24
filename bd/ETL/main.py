@@ -21,5 +21,5 @@ while i < len(lista):
     i += 1
 
 # Instalando o request, executar no CMD ou no shell dentro dessa pasta 
-
 # pip install request 
+# pip install myqsl-connector-python
