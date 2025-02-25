@@ -33,11 +33,13 @@ i = 0
 while i < len(lista):
     titulo = lista[i]['title']
     descricao = lista[i]['description']
+    preco = lista[i]['price']
     # print(f"{titulo} - {descricao}")
-    sql = f"INSERT INTO pizza(sabor, ingredientes) VALUES('{titulo}', '{descricao}');"
+    # sql = f"INSERT INTO pizza(sabor, ingredientes) VALUES('{titulo}', '{descricao}');"
+    sql = f"UPDATE pizza SET preco = '{preco}' where sabor = '{titulo}';"
+
     banco(sql)
     i += 1
-
 
 # Instalando o request, executar no CMD ou no shell dentro dessa pasta 
 # pip install request 
