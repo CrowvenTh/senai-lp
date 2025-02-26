@@ -43,4 +43,4 @@ while i < len(lista):
 
 # Instalando o request, executar no CMD ou no shell dentro dessa pasta 
 # pip install request 
-# pip install myqsl-connector-python 
+# pip install mysql-connector-python 

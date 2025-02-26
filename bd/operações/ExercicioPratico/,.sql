@@ -4,6 +4,7 @@ SET SQL_SAFE_UPDATES=0;
 select * from pizza;
 select * from regiao;
 select * from estado;
+select * from municipio;
 
 ALTER TABLE pizza ADD COLUMN preco decimal(5,2);
 
@@ -26,7 +27,6 @@ id_municipio int auto_increment primary key,
 nome varchar(100),
 id_regiao int,
 id_estado int,
-
 	foreign key (id_regiao) references regiao(id_regiao),
     foreign key (id_estado) references estado(id_estado)
 );
