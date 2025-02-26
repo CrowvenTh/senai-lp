@@ -22,5 +22,11 @@ nome varchar(30),
 );
 
 create table municipio (
-id_municipio int auto_increment primary key
+id_municipio int auto_increment primary key,
+nome varchar(100),
+id_regiao int,
+id_estado int,
+
+	foreign key (id_regiao) references regiao(id_regiao),
+    foreign key (id_estado) references estado(id_estado)
 );
