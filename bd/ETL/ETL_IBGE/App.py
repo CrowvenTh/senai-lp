@@ -63,10 +63,11 @@ i = 0
 
 while i < len(lista3):
     id = lista3[i]['id']
-    nome = lista3[i]['nome']
+    nome = lista3[i]['nome'].replace("'",",")
     id_regiao = lista3[i]['microrregiao']['mesorregiao']['UF']['regiao']['id']
     id_estado = lista3[i]['microrregiao']['mesorregiao']['UF']['id']
     sql = f"INSERT INTO municipio (id_municipio, nome, id_regiao, id_estado) VALUES ({id}, '{nome}',{id_regiao}, {id_estado});"
 
+    #print(sql)
     bancoDB(sql)
     i += 1
