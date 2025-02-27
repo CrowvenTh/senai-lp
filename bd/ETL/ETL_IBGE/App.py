@@ -16,22 +16,57 @@ def bancoDB(sql):
     cursor.close()
     conexao.close()
 # Endereço de onde vamos acessar
-url = 'https://servicodados.ibge.gov.br/api/v1/localidades/regioes'
+
+url1 = 'https://servicodados.ibge.gov.br/api/v1/localidades/regioes'
+
+url2 = 'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
+
+url3 = 'https://servicodados.ibge.gov.br/api/v1/localidades/municipios'
 
 # Execução de requisição
-response = requests.get(url)
+response1 = requests.get(url1)
+
+response2 = requests.get(url2)
+
+response3 = requests.get(url3)
 
 # Mostrar o retorno 
-obj = response.json()
-lista = obj
+obj1 = response1.json()
+lista1 = obj1
+
+obj2 = response2.json()
+lista2 = obj2
+
+obj3 = response3.json()
+lista3 = obj3
 
 # loop para mostrar todos os itens
 i = 0
-while i < len(lista):
-    id = lista[i]['id']
-    sigla = lista[i]['sigla']
-    nome = lista[i]['nome']
-    sql = f"INSERT INTO regiao(id_regiao, sigla, nome) VALUES ('{id}', '{sigla}', '{nome}');"
+# while i < len(lista1):
+#     id = lista1[i]['id']
+#     sigla = lista1[i]['sigla']
+#     nome = lista1[i]['nome']
+#     sql = f"INSERT INTO regiao(id_regiao, sigla, nome) VALUES ('{id}', '{sigla}', '{nome}');"
+
+#     bancoDB(sql)
+#     i += 1
+
+# while i < len(lista2):
+#     id = lista2[i]['id']
+#     sigla = lista2[i]['sigla']
+#     nome = lista2[i]['nome']
+#     regiao = lista2[i]['regiao']['id']
+#     sql = f"INSERT INTO estado(id_estado, sigla, nome, id_regiao) VALUES ('{id}','{sigla}','{nome}','{regiao}' );"
+
+#     bancoDB(sql)
+#     i += 1
+
+while i < len(lista3):
+    id = lista3[i]['id']
+    nome = lista3[i]['nome']
+    id_regiao = lista3[i]['microrregiao']['mesorregiao']['UF']['regiao']['id']
+    id_estado = lista3[i]['microrregiao']['mesorregiao']['UF']['id']
+    sql = f"INSERT INTO municipio (id_municipio, nome, id_regiao, id_estado) VALUES ({id}, '{nome}',{id_regiao}, {id_estado});"
 
     bancoDB(sql)
     i += 1
