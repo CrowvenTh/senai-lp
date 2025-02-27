@@ -1,4 +1,3 @@
-
 create database etl_ibge;
 use etl_ibge;
 
@@ -30,3 +29,13 @@ id_estado int,
 select * from etl_ibge.regiao;
 select * from etl_ibge.estado;
 select * from etl_ibge.municipio;
+
+select
+	e.sigla, e.nome, r.sigla, r.nome, m.nome 
+	from municipio as m 
+		inner join 
+			regiao as r
+				on m.id_regiao = r.id_regiao
+					inner join estado as e
+						on m.id_estado = e.id_estado
+							where r.nome = "NORTE";
