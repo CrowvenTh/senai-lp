@@ -16,8 +16,8 @@ def bancoDB(sql):
     cursor.close()
     conexao.close()
 
-i = 0
 def InsertRegiao():
+    i = 0
     # Endereço de onde vamos acessar
     url = 'https://servicodados.ibge.gov.br/api/v1/localidades/regioes'
     # Execução de requisição
@@ -39,6 +39,7 @@ def InsertEstado():
     response = requests.get(url)
     obj = response.json()
     lista = obj
+    i = 0
     while i < len(lista):
         id = lista[i]['id']
         sigla = lista[i]['sigla']
@@ -54,9 +55,10 @@ def InsertMunicipio():
     response = requests.get(url)
     obj = response.json()
     lista = obj
+    i = 0
     while i < len(lista):
         id = lista[i]['id']
-        nome = lista[i]['nome'].replace("'",",")
+        nome = lista[i]['nome'].replace("'","´")
         id_regiao = lista[i]['microrregiao']['mesorregiao']['UF']['regiao']['id']
         id_estado = lista[i]['microrregiao']['mesorregiao']['UF']['id']
         sql = f"INSERT INTO municipio (id_municipio, nome, id_regiao, id_estado) VALUES ({id}, '{nome}',{id_regiao}, {id_estado});"
